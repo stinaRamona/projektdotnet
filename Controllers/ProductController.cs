@@ -51,7 +51,7 @@ namespace projektdotnet.Controllers
         // GET: Product/Create
         public IActionResult Create()
         {
-            ViewData["CategoryModelId"] = new SelectList(_context.Categories, "Id", "Id");
+            ViewData["CategoryModelId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace projektdotnet.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryModelId"] = new SelectList(_context.Categories, "Id", "Id", productModel.CategoryModelId);
+            ViewData["CategoryModelId"] = new SelectList(_context.Categories, "Id", "Name", productModel.CategoryModelId);
             return View(productModel);
         }
 
@@ -85,7 +85,7 @@ namespace projektdotnet.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryModelId"] = new SelectList(_context.Categories, "Id", "Id", productModel.CategoryModelId);
+            ViewData["CategoryModelId"] = new SelectList(_context.Categories, "Id", "Name", productModel.CategoryModelId);
             return View(productModel);
         }
 
@@ -121,7 +121,7 @@ namespace projektdotnet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryModelId"] = new SelectList(_context.Categories, "Id", "Id", productModel.CategoryModelId);
+            ViewData["CategoryModelId"] = new SelectList(_context.Categories, "Id", "Name", productModel.CategoryModelId);
             return View(productModel);
         }
 
