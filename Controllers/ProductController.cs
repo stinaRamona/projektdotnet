@@ -108,7 +108,7 @@ namespace projektdotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,CategoryModelId,ImageFile")] ProductModel productModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,CategoryModelId,ImageFile,ImageName")] ProductModel productModel)
         {
             if (id != productModel.Id)
             {
@@ -124,13 +124,26 @@ namespace projektdotnet.Controllers
                         //sparar bild, tar bort gamla ifall att
                         var fileName = Path.GetFileNameWithoutExtension(productModel.ImageFile.FileName);
                         var extension = Path.GetExtension(productModel.ImageFile.FileName);
-                        productModel.ImageName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                        var newImageName = $"{fileName}_{DateTime.Now:yyyyMMddHHmmss}{extension}";
 
-                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", productModel.ImageName);
-                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", newImageName);
+                        using (var stream = new FileStream(path, FileMode.Create))
                         {
-                            await productModel.ImageFile.CopyToAsync(fileStream);
+                            await productModel.ImageFile.CopyToAsync(stream);
                         }
+
+                        if (!string.IsNullOrEmpty(productModel.ImageName))
+                        {
+                            var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", productModel.ImageName);
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                        }
+
+                        //uppdaterar med nya filen
+                        productModel.ImageName = newImageName;
+                        
                     }
 
                     _context.Update(productModel);
