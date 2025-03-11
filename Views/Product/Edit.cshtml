@@ -34,6 +34,18 @@
                 <span asp-validation-for="CategoryModelId" class="text-danger"></span>
             </div>
             <div class="form-group">
+            <label>Current Image</label>
+            @if (!string.IsNullOrEmpty(Model.ImageName))
+            {
+                <img src="~/images/@Model.ImageName" alt="Product Image" style="width:100px; height:auto;" />
+            }
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

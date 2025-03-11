@@ -60,10 +60,24 @@ namespace projektdotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,CategoryModelId")] ProductModel productModel)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,CategoryModelId,ImageFile")] ProductModel productModel)
         {
             if (ModelState.IsValid)
             {
+                if(productModel.ImageFile != null)
+                {
+                    //sparar bilden 
+                    var fileName = Path.GetFileNameWithoutExtension(productModel.ImageFile.FileName);
+                    var extension = Path.GetExtension(productModel.ImageFile.FileName);
+                    productModel.ImageName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", productModel.ImageName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await productModel.ImageFile.CopyToAsync(fileStream);
+                    }
+                }
+
                 _context.Add(productModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -94,7 +108,7 @@ namespace projektdotnet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,CategoryModelId")] ProductModel productModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,CategoryModelId,ImageFile")] ProductModel productModel)
         {
             if (id != productModel.Id)
             {
@@ -105,6 +119,20 @@ namespace projektdotnet.Controllers
             {
                 try
                 {
+                    if (productModel.ImageFile != null) 
+                    {
+                        //sparar bild, tar bort gamla ifall att
+                        var fileName = Path.GetFileNameWithoutExtension(productModel.ImageFile.FileName);
+                        var extension = Path.GetExtension(productModel.ImageFile.FileName);
+                        productModel.ImageName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", productModel.ImageName);
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await productModel.ImageFile.CopyToAsync(fileStream);
+                        }
+                    }
+
                     _context.Update(productModel);
                     await _context.SaveChangesAsync();
                 }
