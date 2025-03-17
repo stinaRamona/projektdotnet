@@ -27,5 +27,19 @@ namespace MyApp.Namespace
 
             return Ok(await _context.Products.ToListAsync());
         }
+
+        //GET anrop för en specifik produkt med id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProduct(int id) 
+        {
+            var product = await _context.Products.FindAsync(id); 
+
+            if(product == null)
+            {
+                return NotFound(); 
+            }
+
+            return Ok(product); 
+        }
     }
 }
