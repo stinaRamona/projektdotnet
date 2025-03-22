@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Uppdatera</h1>
 
-<h4>ProductModel</h4>
+<h4>Produkt</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,46 +14,46 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Namn</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="control-label">Beskrivning</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+                <label asp-for="Price" class="control-label">Pris</label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryModelId" class="control-label"></label>
+                <label asp-for="CategoryModelId" class="control-label">Kategori</label>
                 <select asp-for="CategoryModelId" class="form-control" asp-items="ViewBag.CategoryModelId"></select>
                 <span asp-validation-for="CategoryModelId" class="text-danger"></span>
             </div>
             <div class="form-group">
-            <label>Current Image</label>
+            <label>Nuvarande bild</label>
             @if (!string.IsNullOrEmpty(Model.ImageName))
             {
                 <img src="~/images/@Model.ImageName" alt="Product Image" style="width:100px; height:auto;" />
             }
             </div>
             <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
+                <label asp-for="ImageFile" class="control-label">Bildfil</label>
                 <input asp-for="ImageFile" type="file" class="form-control" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Spara" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Tillbaka till listan</a>
 </div>
 
 @section Scripts {
